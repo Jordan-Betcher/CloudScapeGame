@@ -1,21 +1,28 @@
 package main;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import game.events.Event;
 
-public class TimerEvent extends Event<Double>
+public class TimerEvent extends Event<Integer>
 {
 	
-	private double startTime;
+	private long startTime;
 	
 	//This variable represents how many seconds or second parts will be done b4 all the listeners are activated
 	private double increments;
 	
+	private final static int milisecondsToSeconds = 1000;
+	
+	//TODO allow it to be paused?
+	
 	public TimerEvent(double increments)
 	{
-		this(0.0, increments);
+		this(System.currentTimeMillis(), increments);
 	}
 	
-	public TimerEvent(double startTime, double increments)
+	public TimerEvent(long startTime, double increments)
 	{
 		this.startTime = startTime;
 		this.increments = increments;
@@ -26,16 +33,36 @@ public class TimerEvent extends Event<Double>
 	{
 		double timePassed = startTime;
 		//TODO create timer using the increments variable
-		
-		
-		
-		//This activates all the event listeners and passes to them the time that has elapsed
-		this.activate(timePassed);
+		TimerTask timerTask = new TimerTask()
+		{
+
+            @Override
+            public void run() 
+            {
+                Main.events.activate(getTicks(), TimerEvent.class);
+            }
+        };
+
+        Timer timer = new Timer("TimerPer" + this.increments);//create a new Timer
+
+        //The 0 is delay
+        timer.scheduleAtFixedRate(timerTask, 0, (long) this.increments * milisecondsToSeconds);
 	}
 	
-	public double getStartTime()
+	public long getStartTime()
 	{
 		return startTime;
+	}
+	
+	public long getTimeElapsed()
+	{
+		return System.currentTimeMillis() - this.startTime;
+	}
+	
+	public int getTicks()
+	{
+		double seconds = getTimeElapsed() / milisecondsToSeconds;
+		return (int) (seconds / this.increments);
 	}
 	
 	
