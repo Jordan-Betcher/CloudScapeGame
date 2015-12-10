@@ -1,6 +1,7 @@
 package main;
 
-import screen.Render;
+import screen.render.KeyListenerEvent;
+import screen.render.Render;
 import game.events.Events;
 import game.worldmap.camara.Camara;
 
@@ -8,20 +9,30 @@ public class Main
 {
 	public static Events events = new Events();
 	public static Map map;
+	public static Render render;
 	
 	public static void main(String[] args)
 	{
 		map = new Map();
-		
 		Player player = new Player(map);
+		Camara camara = new PlayerCamara(player);
+		render = new Render(camara);
+		
 		map.addEntity(player);
 		
-		Camara camara = new PlayerCamara(player);
-		Render render = new Render(camara);
-		
+		addEvents();
+		addListeners();
+	}
+
+	private static void addEvents()
+	{
 		events.add(new TimerEvent(1.0));
-		//TODO pass in the stuff for the TimerListener to be able to update the map and render it
-		events.add(new TimerListener(render, map), TimerEvent.class);
+		events.add(render.getKeyListenerEvent());
+	}
+
+	private static void addListeners()
+	{
+		events.add(new GameLoop(render, map), TimerEvent.class);
 	}
 	
 }
