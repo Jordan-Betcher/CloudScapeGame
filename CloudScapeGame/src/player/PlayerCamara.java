@@ -1,8 +1,9 @@
-package main;
+package player;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import main.Map;
 import game.worldmap.camara.Camara;
 
 public class PlayerCamara implements Camara
@@ -20,7 +21,7 @@ public class PlayerCamara implements Camara
 	@Override
 	public void draw(Graphics2D graphics2D)
 	{
-		Map map = player.getMap();
+		Map map = player.map;
 		map.draw(graphics2D, focus);
 	}
 	

@@ -1,5 +1,8 @@
 package main;
 
+import player.Player;
+import player.PlayerMind;
+import player.PlayerCamara;
 import screen.render.KeyListenerEvent;
 import screen.render.Render;
 import game.events.Events;
@@ -18,21 +21,15 @@ public class Main
 		Camara camara = new PlayerCamara(player);
 		render = new Render(camara);
 		
-		map.addEntity(player);
+		PlayerMind playerMind = new PlayerMind(player);
 		
-		addEvents();
-		addListeners();
-	}
-
-	private static void addEvents()
-	{
+		map.addEntity(playerMind);
+		
 		events.add(new TimerEvent(1.0));
-		events.add(render.getKeyListenerEvent());
-	}
-
-	private static void addListeners()
-	{
 		events.add(new GameLoop(render, map), TimerEvent.class);
+		
+		events.add(render.getKeyListenerEvent());
+		events.add(playerMind, KeyListenerEvent.class);
 	}
 	
 }

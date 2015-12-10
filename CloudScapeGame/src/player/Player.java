@@ -1,16 +1,17 @@
-package main;
+package player;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import main.Map;
 import game.worldmap.Drawable;
 import game.worldmap.Moveable;
 import game.worldmap.Position3D;
 
 public class Player implements Drawable, Moveable
 {
-	private Map map;
-	private Position3D position;
+	public Map map;
+	public Position3D position;
 	
 	public Player(Map map)
 	{
@@ -31,11 +32,6 @@ public class Player implements Drawable, Moveable
 	public Position3D getPosition3D()
 	{
 		return position;
-	}
-
-	public Map getMap()
-	{
-		return map;
 	}
 	
 }
