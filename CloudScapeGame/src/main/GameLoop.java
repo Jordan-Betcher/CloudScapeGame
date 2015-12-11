@@ -3,7 +3,7 @@ package main;
 import screen.render.Render;
 import game.events.EventListenerType;
 
-public class GameLoop extends EventListenerType<Integer>
+public class GameLoop implements EventListenerType<Integer>
 {
 	private Render render;
 	private Map map;
