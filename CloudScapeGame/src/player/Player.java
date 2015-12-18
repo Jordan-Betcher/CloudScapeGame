@@ -1,37 +1,57 @@
 package player;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-import main.Map;
+import screen.render.events.KeyListenerEvent;
+import screen.render.events.MouseKeyPressedEvent;
+import game.events.EventListenerHolder;
+import game.events.Events;
 import game.worldmap.Drawable;
-import game.worldmap.Moveable;
 import game.worldmap.Position3D;
 
-public class Player implements Drawable, Moveable
+public class Player implements Drawable
 {
-	public Map map;
-	public Position3D position;
-	
-	public Player(Map map)
+	private PlayerData playerData;
+	private EventListenerHolder<MouseEvent> mouseEvent;
+	private KeyEventHandler keyButtons;
+
+	public Player(PlayerData playerData, Events events)
 	{
-		this.map = map;
-		this.position = new Position3D(0, 1, 0);
+		this.playerData = playerData;
+		this.mouseEvent = new EventListenerHolder<MouseEvent>();
+		this.keyButtons = new KeyEventHandler();
+		
+		events.add(this.mouseEvent, MouseKeyPressedEvent.class);
+		events.add(keyButtons, KeyListenerEvent.class);
+		
 	}
 	
-	@Override
-	public void draw(Graphics2D graphics2D)
+	public void update()
 	{
-		graphics2D.setColor(Color.red);
-		//TODO create actual pic
-		//TODO make off set middle? OR do in collision
-		graphics2D.fillRect(this.position.getX(), this.position.getZ(), 64, 64);
+		ArrayList<Character> keysPressed = keyButtons.get();
+		MouseEvent mouse = mouseEvent.get();
+		
+		if(mouse == null)
+		{
+			
+		}
+		else
+		{
+			for(int i = 1; i < main.Main.times.size(); i++)
+			{
+				System.out.println(main.Main.times.get(i) - main.Main.times.get(i-1));
+			}
+			playerData.position = new Position3D(mouse.getX(), mouse.getY(), 0);
+			//System.out.println("X: " + mouse.getX() + " Y: " + mouse.getY());
+		}
 	}
 
-	@Override
-	public Position3D getPosition3D()
+	public void draw(Graphics2D graphics2D)
 	{
-		return position;
+		playerData.draw(graphics2D);
 	}
 	
 }

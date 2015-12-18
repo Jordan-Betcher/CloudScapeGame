@@ -9,19 +9,19 @@ import game.worldmap.camara.Camara;
 public class PlayerCamara implements Camara
 {
 	//TODO change this to entity later
-	private Player player;
+	private PlayerData playerData;
 	private Rectangle focus;
 	
-	public PlayerCamara(Player player)
+	public PlayerCamara(PlayerData playerData)
 	{
-		this.player = player;
+		this.playerData = playerData;
 		focus = new Rectangle(0, 0, 640, 480);
 	}
 	
 	@Override
 	public void draw(Graphics2D graphics2D)
 	{
-		Map map = player.map;
+		Map map = playerData.map;
 		map.draw(graphics2D, focus);
 	}
 	
