@@ -13,7 +13,7 @@ public class TimerEvent extends Event<Integer>
 	//This variable represents how many seconds or second parts will be done b4 all the listeners are activated
 	private double increments;
 	
-	private final static int milisecondsToSeconds = 1000;
+	private final static double milisecondsToSeconds = 1000.0;
 	
 	//TODO allow it to be paused?
 	
@@ -46,7 +46,7 @@ public class TimerEvent extends Event<Integer>
         Timer timer = new Timer("TimerPer" + this.increments);//create a new Timer
 
         //The 0 is delay
-        timer.scheduleAtFixedRate(timerTask, 0, (long) this.increments * milisecondsToSeconds);
+        timer.scheduleAtFixedRate(timerTask, 0, (long)(this.increments * milisecondsToSeconds));
 	}
 	
 	public long getStartTime()
