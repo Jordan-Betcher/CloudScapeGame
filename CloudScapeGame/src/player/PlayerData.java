@@ -6,17 +6,17 @@ import java.awt.Graphics2D;
 import main.Map;
 import game.worldmap.Drawable;
 import game.worldmap.Moveable;
-import game.worldmap.Position3D;
+import game.worldmap.XYZ;
 
 public class PlayerData implements Drawable, Moveable
 {
-	public Map map;
-	public Position3D position;
+	private Map map;
+	private XYZ position;
 	
 	public PlayerData(Map map)
 	{
 		this.map = map;
-		this.position = new Position3D(0, 0, 0);
+		this.position = new XYZ(0, 0, 0);
 	}
 	
 	@Override
@@ -30,9 +30,20 @@ public class PlayerData implements Drawable, Moveable
 	}
 
 	@Override
-	public Position3D getPosition3D()
+	public XYZ getPosition()
 	{
 		return position;
+	}
+
+	@Override
+	public void setPosition(XYZ xyzCoords)
+	{
+		this.position = xyzCoords;		
+	}
+
+	public Map getMap()
+	{
+		return map;
 	}
 	
 }

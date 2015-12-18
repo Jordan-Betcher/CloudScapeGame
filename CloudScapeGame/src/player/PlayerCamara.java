@@ -21,7 +21,7 @@ public class PlayerCamara implements Camara
 	@Override
 	public void draw(Graphics2D graphics2D)
 	{
-		Map map = playerData.map;
+		Map map = playerData.getMap();
 		map.draw(graphics2D, focus);
 	}
 	
