@@ -9,6 +9,7 @@ import screen.render.events.KeyListenerEvent;
 import screen.render.events.MouseKeyPressedEvent;
 import game.events.EventListenerHolder;
 import game.events.Events;
+import game.worldmap.Collision2D;
 import game.worldmap.Drawable;
 import game.worldmap.XY;
 import game.worldmap.XYZ;
@@ -29,7 +30,6 @@ public class Player implements Drawable
 		
 		events.add(this.mouseEvent, MouseKeyPressedEvent.class);
 		events.add(keyButtons, KeyListenerEvent.class);
-		
 	}
 	
 	public void update()
@@ -47,6 +47,7 @@ public class Player implements Drawable
 		
 		if(mouse != null)
 		{
+			//After the camara starts moving, you will have to add the camaras position too
 			this.destination = new XY(mouse.getX(), mouse.getY());
 		}
 	}
@@ -57,24 +58,26 @@ public class Player implements Drawable
 		
 		if(playerPosition != this.destination)
 		{
-			//Change 20 to a variable like speed?
-			if(this.distanceBetween(playerPosition, this.destination) < 20)
+			//TODO make it so that it stops when an edge touches instead of if the upper-right corner touches
+			if(Collision2D.distanceBetween(playerPosition, this.destination) <= this.playerData.getSpeed())
 			{
 				this.playerData.setPosition(new XYZ(this.destination, this.playerData.getPosition().getZ()));
+			}
+			else
+			{
+				Move(Collision2D.move(playerPosition, this.destination, this.playerData.getSpeed()));
 			}
 		}
 	}
 
-	private double distanceBetween(XY xy1, XY xy2)
+	private void Move(XY xy)
 	{
-		
-		int x1 = xy1.getX();
-		int x2 = xy2.getX();
-		
-		int y1 = xy1.getY();
-		int y2 = xy2.getY();
-		
-		return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
+		XYZ playerPosition = this.playerData.getPosition();
+		this.playerData.setPosition(
+				new XYZ(
+						playerPosition.getX() + xy.getX()
+						, playerPosition.getY() + xy.getY()
+						, playerPosition.getZ()));
 	}
 
 	public void draw(Graphics2D graphics2D)
